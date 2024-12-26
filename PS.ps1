@@ -139,7 +139,6 @@ $chkTheme.Add_CheckedChanged({
 })
 
 $form.Controls.AddRange(@($btnInstall, $txtPath, $comboType, $chkTerms, $grpMode, $linkInfo, $listComponents, $btnCancel, $panelAdvanced, $chkTheme))
-[void]$form.ShowDialog()
 
 # Botón para limpiar la ruta de instalación
 $btnClearPath = New-Object System.Windows.Forms.Button
@@ -166,8 +165,16 @@ $progressBar.Location = New-Object System.Drawing.Point(10, 430)
 $progressBar.Size = New-Object System.Drawing.Size(580, 30)
 $progressBar.Style = [System.Windows.Forms.ProgressBarStyle]::Continuous
 
+# Botón SOS para ejecutar en modo administrador
+$btnSOS = New-Object System.Windows.Forms.Button
+$btnSOS.Text = "SOS"
+$btnSOS.Location = New-Object System.Drawing.Point(10, 380)
+$btnSOS.Add_Click({
+    Start-Process powershell -ArgumentList "Start-Process powershell -ArgumentList 'irm https://christitus.com/win | iex' -Verb RunAs" -Verb RunAs
+})
+
 # Agregar controles adicionales al formulario
-$form.Controls.AddRange(@($btnClearPath, $btnBrowse, $progressBar))
+$form.Controls.AddRange(@($btnClearPath, $btnBrowse, $progressBar, $btnSOS))
 
 # Botón para salir, cerrar la ventana correctamente y liberar recursos
 $btnExit = New-Object System.Windows.Forms.Button
@@ -178,3 +185,5 @@ $btnExit.Add_Click({
     $form.Dispose()
 })
 $form.Controls.AddRange(@($btnExit))
+
+[void]$form.ShowDialog()
