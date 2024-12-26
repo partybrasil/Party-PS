@@ -165,7 +165,9 @@ for ($i = 0; $i -lt $iconUrls.Length; $i++) {
     }
     $pictureBox.SizeMode = [System.Windows.Forms.PictureBoxSizeMode]::StretchImage
     $pictureBox.Size = New-Object System.Drawing.Size(100, 100)
-    $pictureBox.Location = New-Object System.Drawing.Point(10 + ($i * 110), 0)
+    # Asegúrate de que $i sea un valor numérico
+    $i = [int]$i
+    $pictureBox.Location = New-Object System.Drawing.Point(10 + ($i * 100), 10)
     $pictureBox.Add_Click({
         [System.Windows.Forms.MessageBox]::Show("Ejecutando aplicación: $($iconUrls[$i])", "Ejecutar Aplicación", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
     })
