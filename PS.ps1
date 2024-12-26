@@ -138,44 +138,9 @@ $chkTheme.Add_CheckedChanged({
     }
 })
 
-# Sección de iconos de aplicaciones de ejemplo
-$panelIcons = New-Object System.Windows.Forms.Panel
-$panelIcons.Location = New-Object System.Drawing.Point(10, 370)
-$panelIcons.Size = New-Object System.Drawing.Size(580, 100)
-
-$iconUrls = @(
-    "https://cdn.icon-icons.com/icons2/1211/PNG/96/1491580651-yumminkysocialmedia28_83061.png",
-    "https://cdn.icon-icons.com/icons2/1211/PNG/96/1491580651-yumminkysocialmedia28_83061.png",
-    "https://cdn.icon-icons.com/icons2/1211/PNG/96/1491580651-yumminkysocialmedia28_83061.png",
-    "https://cdn.icon-icons.com/icons2/1211/PNG/96/1491580651-yumminkysocialmedia28_83061.png",
-    "https://cdn.icon-icons.com/icons2/1211/PNG/96/1491580651-yumminkysocialmedia28_83061.png"
-)
-
-$webClient = New-Object System.Net.WebClient
-
-for ($i = 0; $i -lt $iconUrls.Length; $i++) {
-    $pictureBox = New-Object System.Windows.Forms.PictureBox
-    try {
-        $imageStream = $webClient.OpenRead($iconUrls[$i])
-        $pictureBox.Image = [System.Drawing.Image]::FromStream($imageStream)
-        $imageStream.Close()
-    } catch {
-        [System.Windows.Forms.MessageBox]::Show("No se pudo cargar la imagen: $($iconUrls[$i])", "Error", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
-        continue
-    }
-    $pictureBox.SizeMode = [System.Windows.Forms.PictureBoxSizeMode]::StretchImage
-    $pictureBox.Size = New-Object System.Drawing.Size(100, 100)
-    # Asegúrate de que $i sea un valor numérico
-    $i = [int]$i
-    $pictureBox.Location = New-Object System.Drawing.Point(10 + ($i * 100), 10)
-    $pictureBox.Add_Click({
-        [System.Windows.Forms.MessageBox]::Show("Ejecutando aplicación: $($iconUrls[$i])", "Ejecutar Aplicación", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Information)
-    })
-    $panelIcons.Controls.Add($pictureBox)
-}
-
-$form.Controls.AddRange(@($btnInstall, $txtPath, $comboType, $chkTerms, $grpMode, $linkInfo, $listComponents, $btnCancel, $panelAdvanced, $chkTheme, $panelIcons))
+$form.Controls.AddRange(@($btnInstall, $txtPath, $comboType, $chkTerms, $grpMode, $linkInfo, $listComponents, $btnCancel, $panelAdvanced, $chkTheme))
 [void]$form.ShowDialog()
+
 # Botón para limpiar la ruta de instalación
 $btnClearPath = New-Object System.Windows.Forms.Button
 $btnClearPath.Text = "Limpiar Ruta"
@@ -195,7 +160,6 @@ $btnBrowse.Add_Click({
     }
 })
 
-
 # Barra de progreso para la instalación
 $progressBar = New-Object System.Windows.Forms.ProgressBar
 $progressBar.Location = New-Object System.Drawing.Point(10, 430)
@@ -214,5 +178,3 @@ $btnExit.Add_Click({
     $form.Dispose()
 })
 $form.Controls.AddRange(@($btnExit))
-
-
