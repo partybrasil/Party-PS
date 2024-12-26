@@ -1,6 +1,2 @@
 workspace.code-workspace
-.vscode/ 
-settings.json
-tasks.json
-launch.json
-extensions.json
+.vscode/

@@ -109,11 +109,11 @@ $grpMode.Controls.AddRange(@($radioStandard, $radioAdvanced))
 
 # LinkLabel para más información
 $linkInfo = New-Object System.Windows.Forms.LinkLabel
-$linkInfo.Text = "Más información"
+$linkInfo.Text = "Party PS Profile"
 $linkInfo.Location = New-Object System.Drawing.Point(10, 210)
 $linkInfo.Add_LinkClicked({
-    Start-Process "https://www.example.com"
-    Write-Log "Abriendo enlace: https://www.example.com" "Blue"
+    Start-Process "https://github.com/partybrasil/PowerShell-Profile/blob/master/Microsoft.PowerShell_profile.ps1"
+    Write-Log "Abriendo enlace: https://github.com/partybrasil/PowerShell-Profile/blob/master/Microsoft.PowerShell_profile.ps1" "Blue"
 })
 
 # ListBox para seleccionar componentes adicionales
@@ -188,9 +188,23 @@ $progressBar.Location = New-Object System.Drawing.Point(10, 430)
 $progressBar.Size = New-Object System.Drawing.Size(580, 30)
 $progressBar.Style = [System.Windows.Forms.ProgressBarStyle]::Continuous
 
+# Función para actualizar la barra de progreso en bucle
+$timer = New-Object System.Windows.Forms.Timer
+$timer.Interval = 50
+$direction = 1
+$timer.Add_Tick({
+    if ($progressBar.Value -ge 100) {
+        $direction = -1
+    } elseif ($progressBar.Value -le 0) {
+        $direction = 1
+    }
+    $progressBar.Value += $direction
+})
+$timer.Start()
+
 # Botón SOS para ejecutar en modo administrador
 $btnSOS = New-Object System.Windows.Forms.Button
-$btnSOS.Text = "SOS"
+$btnSOS.Text = "WinSOS"
 $btnSOS.Location = New-Object System.Drawing.Point(10, 380)
 $btnSOS.Add_Click({
     Start-Process powershell -ArgumentList "Start-Process powershell -ArgumentList 'irm https://christitus.com/win | iex' -Verb RunAs" -Verb RunAs
