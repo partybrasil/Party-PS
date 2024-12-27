@@ -2,7 +2,7 @@ Add-Type -AssemblyName System.Windows.Forms
 
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Herramientas de Sistema"
-$form.Size = New-Object System.Drawing.Size(600, 500)
+$form.Size = New-Object System.Drawing.Size(600, 700)
 
 # Función para escribir log con colores
 function Write-Log {
@@ -92,7 +92,7 @@ $radioStandard.Location = New-Object System.Drawing.Point(10, 20)
 $radioStandard.Checked = $true
 $radioStandard.Add_CheckedChanged({
     $panelAdvanced.Visible = $false
-    $form.Size = New-Object System.Drawing.Size(400, 500)
+    $form.Size = New-Object System.Drawing.Size(400, 700)
     Write-Log "Modo de instalación cambiado a: Estándar" "Yellow"
 })
 
@@ -101,7 +101,7 @@ $radioAdvanced.Text = "Avanzado"
 $radioAdvanced.Location = New-Object System.Drawing.Point(100, 20)
 $radioAdvanced.Add_CheckedChanged({
     $panelAdvanced.Visible = $true
-    $form.Size = New-Object System.Drawing.Size(600, 500)
+    $form.Size = New-Object System.Drawing.Size(600, 700)
     Write-Log "Modo de instalación cambiado a: Avanzado" "Yellow"
 })
 
@@ -224,5 +224,354 @@ $btnExit.Add_Click({
     Write-Log "Formulario cerrado y recursos liberados" "Red"
 })
 $form.Controls.AddRange(@($btnExit))
+
+# Este script de PowerShell crea una interfaz gráfica con botones para realizar varias tareas de optimización y limpieza en el sistema.
+
+$btnDisableServices = New-Object System.Windows.Forms.Button
+$btnDisableServices.Text = "Deshabilitar Servicios"
+$btnDisableServices.Location = New-Object System.Drawing.Point(10, 510)
+$btnDisableServices.Width = 180
+$btnDisableServices.Add_Click({
+    Write-Log "Deshabilitando servicios innecesarios..." "Green"
+    Get-Service -Name "DiagTrack", "dmwappushservice" | Stop-Service -Force
+    Get-Service -Name "DiagTrack", "dmwappushservice" | Set-Service -StartupType Disabled
+    Write-Log "Servicios innecesarios deshabilitados." "Green"
+})
+$btnDisableServices.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnDisableServices, "Deshabilita servicios innecesarios del sistema para mejorar el rendimiento. Recomendado para usuarios avanzados.")
+})
+
+$btnCleanTempFiles = New-Object System.Windows.Forms.Button
+$btnCleanTempFiles.Text = "Limpiar Archivos Temporales"
+$btnCleanTempFiles.Location = New-Object System.Drawing.Point(10, 540)
+$btnCleanTempFiles.Width = 180
+$btnCleanTempFiles.Add_Click({
+    Write-Log "Limpiando archivos temporales..." "Green"
+    Remove-Item -Path "C:\Windows\Temp\*" -Recurse -Force
+    Remove-Item -Path "$env:TEMP\*" -Recurse -Force
+    Write-Log "Archivos temporales limpiados." "Green"
+})
+$btnCleanTempFiles.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnCleanTempFiles, "Elimina archivos temporales del sistema para liberar espacio en disco. Recomendado realizar periódicamente.")
+})
+
+$btnUninstallApps = New-Object System.Windows.Forms.Button
+$btnUninstallApps.Text = "Desinstalar Apps Preinstaladas"
+$btnUninstallApps.Location = New-Object System.Drawing.Point(10, 570)
+$btnUninstallApps.Width = 180
+$btnUninstallApps.Add_Click({
+    Write-Log "Desinstalando aplicaciones preinstaladas..." "Green"
+    Get-AppxPackage -AllUsers | Remove-AppxPackage
+    Write-Log "Aplicaciones preinstaladas desinstaladas." "Green"
+})
+$btnUninstallApps.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnUninstallApps, "Desinstala aplicaciones preinstaladas del sistema para reducir el bloatware. Recomendado para usuarios que desean un sistema más limpio.")
+})
+
+$btnOptimizeStartup = New-Object System.Windows.Forms.Button
+$btnOptimizeStartup.Text = "Optimizar Arranque"
+$btnOptimizeStartup.Location = New-Object System.Drawing.Point(10, 600)
+$btnOptimizeStartup.Width = 180
+$btnOptimizeStartup.Add_Click({
+    Write-Log "Optimizing startup..." "Green"
+    Get-CimInstance -ClassName Win32_StartupCommand | Remove-CimInstance
+    Write-Log "Startup optimized." "Green"
+})
+$btnOptimizeStartup.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnOptimizeStartup, "Elimina comandos de inicio para optimizar el arranque del sistema. Recomendado para mejorar el tiempo de inicio.")
+})
+
+$btnDisableVisualEffects = New-Object System.Windows.Forms.Button
+$btnDisableVisualEffects.Text = "Desactivar Efectos Visuales"
+$btnDisableVisualEffects.Location = New-Object System.Drawing.Point(10, 630)
+$btnDisableVisualEffects.Width = 180
+$btnDisableVisualEffects.Add_Click({
+    Write-Log "Desactivando efectos visuales..." "Green"
+    Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "VisualFXSetting" -Value 2
+    Write-Log "Efectos visuales desactivados." "Green"
+})
+$btnDisableVisualEffects.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnDisableVisualEffects, "Desactiva los efectos visuales del sistema para mejorar el rendimiento. Recomendado para sistemas con recursos limitados.")
+})
+$btnEnableFirewall = New-Object System.Windows.Forms.Button
+$btnEnableFirewall.Text = "Habilitar Firewall"
+$btnEnableFirewall.Location = New-Object System.Drawing.Point(200, 510)
+$btnEnableFirewall.Width = 180
+$btnEnableFirewall.Add_Click({
+    Write-Log "Habilitando Firewall..." "Green"
+    Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True
+    Write-Log "Firewall habilitado." "Green"
+})
+$btnEnableFirewall.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnEnableFirewall, "Habilita el firewall de Windows para mejorar la seguridad del sistema.")
+})
+
+$btnDisableFirewall = New-Object System.Windows.Forms.Button
+$btnDisableFirewall.Text = "Deshabilitar Firewall"
+$btnDisableFirewall.Location = New-Object System.Drawing.Point(200, 540)
+$btnDisableFirewall.Width = 180
+$btnDisableFirewall.Add_Click({
+    Write-Log "Deshabilitando Firewall..." "Green"
+    Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+    Write-Log "Firewall deshabilitado." "Green"
+})
+$btnDisableFirewall.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnDisableFirewall, "Deshabilita el firewall de Windows. No recomendado a menos que sea necesario.")
+})
+
+$btnEnableDefender = New-Object System.Windows.Forms.Button
+$btnEnableDefender.Text = "Habilitar Defender"
+$btnEnableDefender.Location = New-Object System.Drawing.Point(200, 570)
+$btnEnableDefender.Width = 180
+$btnEnableDefender.Add_Click({
+    Write-Log "Habilitando Windows Defender..." "Green"
+    Set-MpPreference -DisableRealtimeMonitoring $false
+    Write-Log "Windows Defender habilitado." "Green"
+})
+$btnEnableDefender.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnEnableDefender, "Habilita la protección en tiempo real de Windows Defender.")
+})
+
+$btnDisableDefender = New-Object System.Windows.Forms.Button
+$btnDisableDefender.Text = "Deshabilitar Defender"
+$btnDisableDefender.Location = New-Object System.Drawing.Point(200, 600)
+$btnDisableDefender.Width = 180
+$btnDisableDefender.Add_Click({
+    Write-Log "Deshabilitando Windows Defender..." "Green"
+    Set-MpPreference -DisableRealtimeMonitoring $true
+    Write-Log "Windows Defender deshabilitado." "Green"
+})
+$btnDisableDefender.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnDisableDefender, "Deshabilita la protección en tiempo real de Windows Defender. No recomendado.")
+})
+
+$btnClearDNSCache = New-Object System.Windows.Forms.Button
+$btnClearDNSCache.Text = "Limpiar Caché DNS"
+$btnClearDNSCache.Location = New-Object System.Drawing.Point(200, 630)
+$btnClearDNSCache.Width = 180
+$btnClearDNSCache.Add_Click({
+    Write-Log "Limpiando caché DNS..." "Green"
+    Clear-DnsClientCache
+    Write-Log "Caché DNS limpiada." "Green"
+})
+$btnClearDNSCache.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnClearDNSCache, "Limpia la caché DNS del sistema para resolver problemas de conectividad.")
+})
+
+$btnFlushDNS = New-Object System.Windows.Forms.Button
+$btnFlushDNS.Text = "Flush DNS"
+$btnFlushDNS.Location = New-Object System.Drawing.Point(200, 660)
+$btnFlushDNS.Width = 180
+$btnFlushDNS.Add_Click({
+    Write-Log "Flushing DNS..." "Green"
+    ipconfig /flushdns
+    Write-Log "DNS flushed." "Green"
+})
+$btnFlushDNS.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnFlushDNS, "Flushes the DNS resolver cache to resolve connectivity issues.")
+})
+
+$btnRestartNetwork = New-Object System.Windows.Forms.Button
+$btnRestartNetwork.Text = "Reiniciar Red"
+$btnRestartNetwork.Location = New-Object System.Drawing.Point(390, 510)
+$btnRestartNetwork.Width = 180
+$btnRestartNetwork.Add_Click({
+    Write-Log "Reiniciando adaptadores de red..." "Green"
+    Get-NetAdapter | Restart-NetAdapter
+    Write-Log "Adaptadores de red reiniciados." "Green"
+})
+$btnRestartNetwork.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnRestartNetwork, "Reinicia todos los adaptadores de red para resolver problemas de conectividad.")
+})
+
+$btnCheckUpdates = New-Object System.Windows.Forms.Button
+$btnCheckUpdates.Text = "Buscar Actualizaciones"
+$btnCheckUpdates.Location = New-Object System.Drawing.Point(390, 540)
+$btnCheckUpdates.Width = 180
+$btnCheckUpdates.Add_Click({
+    Write-Log "Buscando actualizaciones de Windows..." "Green"
+    Install-Module PSWindowsUpdate -Force
+    Import-Module PSWindowsUpdate
+    Get-WindowsUpdate -Install -AcceptAll -AutoReboot
+    Write-Log "Actualizaciones de Windows instaladas." "Green"
+})
+$btnCheckUpdates.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnCheckUpdates, "Busca e instala actualizaciones de Windows para mantener el sistema actualizado.")
+})
+
+$btnClearEventLogs = New-Object System.Windows.Forms.Button
+$btnClearEventLogs.Text = "Limpiar Logs de Eventos"
+$btnClearEventLogs.Location = New-Object System.Drawing.Point(390, 570)
+$btnClearEventLogs.Width = 180
+$btnClearEventLogs.Add_Click({
+    Write-Log "Limpiando logs de eventos..." "Green"
+    wevtutil el | Foreach-Object { wevtutil cl $_ }
+    Write-Log "Logs de eventos limpiados." "Green"
+})
+$btnClearEventLogs.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnClearEventLogs, "Limpia todos los logs de eventos del sistema para liberar espacio y mejorar el rendimiento.")
+})
+
+$btnEnableHibernate = New-Object System.Windows.Forms.Button
+$btnEnableHibernate.Text = "Habilitar Hibernación"
+$btnEnableHibernate.Location = New-Object System.Drawing.Point(390, 600)
+$btnEnableHibernate.Width = 180
+$btnEnableHibernate.Add_Click({
+    Write-Log "Habilitando hibernación..." "Green"
+    powercfg -h on
+    Write-Log "Hibernación habilitada." "Green"
+})
+$btnEnableHibernate.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnEnableHibernate, "Habilita la opción de hibernación en el sistema para ahorrar energía.")
+})
+
+$btnDisableHibernate = New-Object System.Windows.Forms.Button
+$btnDisableHibernate.Text = "Deshabilitar Hibernación"
+$btnDisableHibernate.Location = New-Object System.Drawing.Point(390, 630)
+$btnDisableHibernate.Width = 180
+$btnDisableHibernate.Add_Click({
+    Write-Log "Deshabilitando hibernación..." "Green"
+    powercfg -h off
+    Write-Log "Hibernación deshabilitada." "Green"
+})
+$btnDisableHibernate.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnDisableHibernate, "Deshabilita la opción de hibernación en el sistema para liberar espacio en disco.")
+})
+
+# Nuevos botones con scripts útiles y populares para Windows 11
+
+$btnEnableDarkMode = New-Object System.Windows.Forms.Button
+$btnEnableDarkMode.Text = "Habilitar Modo Oscuro"
+$btnEnableDarkMode.Location = New-Object System.Drawing.Point(580, 510)
+$btnEnableDarkMode.Width = 180
+$btnEnableDarkMode.Add_Click({
+    Write-Log "Habilitando Modo Oscuro..." "Green"
+    New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value 0 -PropertyType DWORD -Force
+    Write-Log "Modo Oscuro habilitado." "Green"
+})
+$btnEnableDarkMode.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnEnableDarkMode, "Habilita el modo oscuro en Windows 11.")
+})
+
+$btnDisableDarkMode = New-Object System.Windows.Forms.Button
+$btnDisableDarkMode.Text = "Deshabilitar Modo Oscuro"
+$btnDisableDarkMode.Location = New-Object System.Drawing.Point(580, 540)
+$btnDisableDarkMode.Width = 180
+$btnDisableDarkMode.Add_Click({
+    Write-Log "Deshabilitando Modo Oscuro..." "Green"
+    New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value 1 -PropertyType DWORD -Force
+    Write-Log "Modo Oscuro deshabilitado." "Green"
+})
+$btnDisableDarkMode.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnDisableDarkMode, "Deshabilita el modo oscuro en Windows 11.")
+})
+
+$btnEnableTransparency = New-Object System.Windows.Forms.Button
+$btnEnableTransparency.Text = "Habilitar Transparencia"
+$btnEnableTransparency.Location = New-Object System.Drawing.Point(580, 570)
+$btnEnableTransparency.Width = 180
+$btnEnableTransparency.Add_Click({
+    Write-Log "Habilitando Transparencia..." "Green"
+    New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 1 -PropertyType DWORD -Force
+    Write-Log "Transparencia habilitada." "Green"
+})
+$btnEnableTransparency.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnEnableTransparency, "Habilita la transparencia en Windows 11.")
+})
+
+$btnDisableTransparency = New-Object System.Windows.Forms.Button
+$btnDisableTransparency.Text = "Deshabilitar Transparencia"
+$btnDisableTransparency.Location = New-Object System.Drawing.Point(580, 600)
+$btnDisableTransparency.Width = 180
+$btnDisableTransparency.Add_Click({
+    Write-Log "Deshabilitando Transparencia..." "Green"
+    New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "EnableTransparency" -Value 0 -PropertyType DWORD -Force
+    Write-Log "Transparencia deshabilitada." "Green"
+})
+$btnDisableTransparency.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnDisableTransparency, "Deshabilita la transparencia en Windows 11.")
+})
+
+$btnEnableFastStartup = New-Object System.Windows.Forms.Button
+$btnEnableFastStartup.Text = "Habilitar Inicio Rápido"
+$btnEnableFastStartup.Location = New-Object System.Drawing.Point(580, 630)
+$btnEnableFastStartup.Width = 180
+$btnEnableFastStartup.Add_Click({
+    Write-Log "Habilitando Inicio Rápido..." "Green"
+    powercfg -h on
+    Write-Log "Inicio Rápido habilitado." "Green"
+})
+$btnEnableFastStartup.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnEnableFastStartup, "Habilita el inicio rápido en Windows 11.")
+})
+
+$btnDisableFastStartup = New-Object System.Windows.Forms.Button
+$btnDisableFastStartup.Text = "Deshabilitar Inicio Rápido"
+$btnDisableFastStartup.Location = New-Object System.Drawing.Point(580, 660)
+$btnDisableFastStartup.Width = 180
+$btnDisableFastStartup.Add_Click({
+    Write-Log "Deshabilitando Inicio Rápido..." "Green"
+    powercfg -h off
+    Write-Log "Inicio Rápido deshabilitado." "Green"
+})
+$btnDisableFastStartup.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnDisableFastStartup, "Deshabilita el inicio rápido en Windows 11.")
+})
+
+$btnEnableSystemRestore = New-Object System.Windows.Forms.Button
+$btnEnableSystemRestore.Text = "Habilitar Restauración del Sistema"
+$btnEnableSystemRestore.Location = New-Object System.Drawing.Point(770, 510)
+$btnEnableSystemRestore.Width = 180
+$btnEnableSystemRestore.Add_Click({
+    Write-Log "Habilitando Restauración del Sistema..." "Green"
+    Enable-ComputerRestore -Drive "C:\"
+    Write-Log "Restauración del Sistema habilitada." "Green"
+})
+$btnEnableSystemRestore.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnEnableSystemRestore, "Habilita la restauración del sistema en Windows 11.")
+})
+
+$btnDisableSystemRestore = New-Object System.Windows.Forms.Button
+$btnDisableSystemRestore.Text = "Deshabilitar Restauración del Sistema"
+$btnDisableSystemRestore.Location = New-Object System.Drawing.Point(770, 540)
+$btnDisableSystemRestore.Width = 180
+$btnDisableSystemRestore.Add_Click({
+    Write-Log "Deshabilitando Restauración del Sistema..." "Green"
+    Disable-ComputerRestore -Drive "C:\"
+    Write-Log "Restauración del Sistema deshabilitada." "Green"
+})
+$btnDisableSystemRestore.Add_MouseHover({
+    $tooltip = New-Object System.Windows.Forms.ToolTip
+    $tooltip.SetToolTip($btnDisableSystemRestore, "Deshabilita la restauración del sistema en Windows 11.")
+})
+
+$btn
+
+$form.Controls.AddRange(@($btnEnableFirewall, $btnDisableFirewall, $btnEnableDefender, $btnDisableDefender, $btnClearDNSCache, $btnFlushDNS, $btnRestartNetwork, $btnCheckUpdates, $btnClearEventLogs, $btnEnableHibernate, $btnDisableHibernate))
+
+$form.Controls.AddRange(@($btnDisableServices, $btnCleanTempFiles, $btnUninstallApps, $btnOptimizeStartup, $btnDisableVisualEffects))
 
 [void]$form.ShowDialog()
