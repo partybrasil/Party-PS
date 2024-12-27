@@ -1,8 +1,10 @@
 # Intentar ejecutar el script como administrador desde el inicio
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Add-Type -AssemblyName PresentationFramework
-    [System.Windows.MessageBox]::Show("Este script necesita ejecutarse con privilegios de administrador. Por favor, acepta la solicitud de permisos.", "Permisos de Administrador", [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Warning)
-    Start-Process powershell -ArgumentList "-File `"$($MyInvocation.MyCommand.Path)`"" -Verb RunAs
+    $result = [System.Windows.MessageBox]::Show("Este script necesita ejecutarse con privilegios de administrador. Por favor, acepta la solicitud de permisos.", "Permisos de Administrador", [System.Windows.MessageBoxButton]::OKCancel, [System.Windows.MessageBoxImage]::Warning)
+    if ($result -eq [System.Windows.MessageBoxResult]::OK) {
+        Start-Process powershell -ArgumentList "-File `"$($MyInvocation.MyCommand.Path)`"" -Verb RunAs
+    }
     exit
 }
 
