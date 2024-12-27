@@ -1,3 +1,10 @@
+# Intentar ejecutar el script como administrador desde el inicio
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Log "El script no se está ejecutando con privilegios de administrador. Solicitando permisos..." "Red"
+    Start-Process powershell -ArgumentList "-File `"$($MyInvocation.MyCommand.Path)`"" -Verb RunAs
+    exit
+}
+
 Add-Type -AssemblyName System.Windows.Forms
 
 $form = New-Object System.Windows.Forms.Form
