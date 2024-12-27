@@ -5,7 +5,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     if ($result -eq [System.Windows.MessageBoxResult]::OK) {
         Start-Process powershell -ArgumentList "-File `"$($MyInvocation.MyCommand.Path)`"" -Verb RunAs
     }
-    exit
+    return
 }
 
 Add-Type -AssemblyName System.Windows.Forms
