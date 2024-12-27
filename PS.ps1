@@ -1,20 +1,8 @@
-# Intentar ejecutar el script como administrador desde el inicio
-if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Add-Type -AssemblyName PresentationFramework
-    $result = [System.Windows.MessageBox]::Show("Este script necesita ejecutarse con privilegios de administrador. Por favor, acepta la solicitud de permisos.", "Permisos de Administrador", [System.Windows.MessageBoxButton]::OKCancel, [System.Windows.MessageBoxImage]::Warning)
-    if ($result -eq [System.Windows.MessageBoxResult]::OK) {
-        Start-Process powershell -ArgumentList "-File `"$($MyInvocation.MyCommand.Path)`"" -Verb RunAs
-    }
-    return
-}
-
 Add-Type -AssemblyName System.Windows.Forms
 
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Herramientas de Sistema"
+$form.Text = "Herramientas de Sistema v2.0"
 $form.Size = New-Object System.Drawing.Size(600, 700)
-
-$form.ShowDialog()
 
 # Función para escribir log con colores
 function Write-Log {
