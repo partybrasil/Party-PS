@@ -14,6 +14,8 @@ $form = New-Object System.Windows.Forms.Form
 $form.Text = "Herramientas de Sistema"
 $form.Size = New-Object System.Drawing.Size(600, 700)
 
+$form.ShowDialog()
+
 # Función para escribir log con colores
 function Write-Log {
     param (
