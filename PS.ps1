@@ -41,6 +41,16 @@ $chkOption3.Location = New-Object System.Drawing.Point(10, 70)
 $panelAdvanced.Controls.AddRange(@($chkOption1, $chkOption2, $chkOption3))
 
 # Botón para instalar software
+# Botón SUDO para ejecutar el script con privilegios de administrador
+$btnSudo = New-Object System.Windows.Forms.Button
+$btnSudo.Text = "SUDO"
+$btnSudo.Location = New-Object System.Drawing.Point(100, 10)
+$btnSudo.Add_Click({
+    Write-Log "Ejecutando script con privilegios de administrador..." "Green"
+    Start-Process powershell -ArgumentList "-File `"$($MyInvocation.MyCommand.Path)`"" -Verb RunAs
+    Write-Log "Script ejecutado con privilegios de administrador." "Green"
+})
+$form.Controls.Add($btnSudo)
 $btnInstall = New-Object System.Windows.Forms.Button
 $btnInstall.Text = "Instalar Software"
 $btnInstall.Location = New-Object System.Drawing.Point(10, 10)
