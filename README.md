@@ -70,9 +70,11 @@ Un botón para salir, cerrar la ventana correctamente y liberar recursos.
 Para ejecutar el script, abre PowerShell y ejecuta el siguiente comando:
 
 ```powershell
-irm https://tinyurl.com/PartyPS404 | iex
+irm https://tinyurl.com/Party-Script | iex
+```
 o
-irm https://raw.githubusercontent.com/partybrasil/Party-PS/master/PS.ps1 | iex
+```powershell
+irm https://raw.githubusercontent.com/Party-Tools/Party-PS/master/PS.ps1 | iex
 ```
 
 ## 📝 Registro de Eventos
